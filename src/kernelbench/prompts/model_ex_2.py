@@ -1,22 +1,37 @@
+"""Template-only architecture example used in prompt construction tests.
+
+This file is intentionally valid Python so package validation and compileall do
+not fail, while still preserving obvious placeholders for prompt authors.
+"""
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
 
 class Model(nn.Module):
     def __init__(self) -> None:
         super().__init__()
-        self.op1 = ...<torch operator 1>...
-        self.op2 = ...<torch operator 2>...
-        self.op3 = ...<torch operator 3>...
-        self.op4 = ...<torch operator 4>...
-        self.op5 = ...<torch operator 5>...
-        self.op6 = ...<torch operator 6>...
+        # Replace these placeholders with real operators for a concrete example.
+        self.op1 = nn.Identity()
+        self.op2 = nn.Identity()
+        self.op3 = nn.Identity()
+        self.op4 = nn.Identity()
+        self.op5 = nn.Identity()
+        self.op6 = nn.Identity()
 
     def forward(self, x):
-        x = self.op1(x, ...<some operator params>...)
-        x = self.op2(x, ...<some operator params>...)
-        x = self.op3(x, ...<some operator params>...)
-        x = self.op4(x, ...<some operator params>...)
-        x = self.op5(x, ...<some operator params>...)
-        x = self.op6(x, ...<some operator params>...)
+        x = self.op1(x)  # placeholder: op1(x, ...)
+        x = self.op2(x)  # placeholder: op2(x, ...)
+        x = self.op3(x)  # placeholder: op3(x, ...)
+        x = self.op4(x)  # placeholder: op4(x, ...)
+        x = self.op5(x)  # placeholder: op5(x, ...)
+        x = self.op6(x)  # placeholder: op6(x, ...)
         return x
+
+
+def get_inputs():
+    return [torch.randn(1, 128, device="cuda")]
+
+
+def get_init_inputs():
+    return []

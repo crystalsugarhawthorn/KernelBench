@@ -19,8 +19,15 @@ import torch
 from importlib.resources import files, as_file
 
 # API clients
-from openai import OpenAI
-from litellm import completion
+try:
+    from openai import OpenAI
+except ImportError:
+    OpenAI = None
+
+try:
+    from litellm import completion
+except ImportError:
+    completion = None
 
 import numpy as np
 from contextlib import contextmanager
@@ -110,6 +117,8 @@ def query_server(
     """
     # Local Server (SGLang, vLLM, Tokasaurus) - special handling
     if server_type == "local":
+        if OpenAI is None:
+            raise ImportError("openai is required for KernelBench local server querying.")
         url = f"http://{server_address}:{server_port}"
         client = OpenAI(
             api_key=SGLANG_KEY, base_url=f"{url}/v1", timeout=None, max_retries=0
@@ -161,6 +170,8 @@ def query_server(
             messages.extend(prompt)
     
     try:
+        if completion is None:
+            raise ImportError("litellm is required for non-local KernelBench provider querying.")
         completion_kwargs = {
             "model": model_name,
             "messages": messages,
