@@ -1,9 +1,13 @@
 # src/prompt_constructor_toml.py | toml based prompt constructor
 import os
 import runpy
-import tomli  
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - Python < 3.11
+    import tomli as tomllib
 
 from kernelbench.utils import read_file, get_package_resource_path, resolve_path, REPO_TOP_PATH
 
@@ -53,7 +57,7 @@ class PromptConfig:
             PromptConfig instance with parsed data
         """
         with open(path, "rb") as f:
-            data = tomli.load(f)
+            data = tomllib.load(f)
         return cls(data)
 
     def compose_blocks(self, keys: List[str]) -> str:
